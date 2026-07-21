@@ -23,5 +23,6 @@ jobs:
       - name: Verify Databricks Connection
         run: databricks current-user me
 
-      - name: Show Repository Files
-        run: ls -R
+      - name: Import Python notebooks
+        run: |
+          databricks workspace import-dir notebooks /Shared/ETL --overwrite
