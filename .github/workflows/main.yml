@@ -1,0 +1,27 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.PRO_DEVLOPEMENT_TARGET_URL }}
+      DATABRICKS_TOKEN: ${{ secrets.PROD_DEVLOPMENT_TARGET_TOCKEN }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Verify Databricks Connection
+        run: databricks current-user me
+
+      - name: Show Repository Files
+        run: ls -R
