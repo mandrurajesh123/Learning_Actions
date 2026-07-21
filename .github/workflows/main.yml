@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy Python Notebooks to Databricks
 
 on:
   push:
@@ -23,6 +23,11 @@ jobs:
       - name: Verify Databricks Connection
         run: databricks current-user me
 
-      - name: Import Python notebooks
+      - name: Show Repository Files
         run: |
-          databricks workspace import-dir notebooks /Shared/ETL --overwrite
+          pwd
+          ls -R
+
+      - name: Import Python Notebooks
+        run: |
+          databricks workspace import-dir . "/Workspace/Users/mandrurajesh89@gmail.com/dev-actions/dev-Learning_Actions/my-project-folder" --overwrite
