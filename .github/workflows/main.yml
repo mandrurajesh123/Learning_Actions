@@ -1,4 +1,4 @@
-name: Deploy Python Notebooks to Databricks
+name: Deploy Python Notebooks to PROD
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-prod:
     runs-on: ubuntu-latest
 
     env:
@@ -21,13 +21,19 @@ jobs:
         uses: databricks/setup-cli@main
 
       - name: Verify Databricks Connection
-        run: databricks current-user me
+        run: |
+          databricks current-user me
 
       - name: Show Repository Files
         run: |
           pwd
+          ls -la
           ls -R
 
-      - name: Import Python Notebooks
+      - name: Create PROD folder (if it doesn't exist)
         run: |
-          databricks workspace import-dir . "/Workspace/Users/mandrurajesh89@gmail.com/dev-actions/dev-Learning_Actions/my-project-folder" --overwrite
+          databricks workspace mkdirs "/Workspace/Users/mandrurajesh89@gmail.com/prod-actions/my-project"
+
+      - name: Deploy to PROD
+        run: |
+          databricks workspace import-dir . "/Workspace/Users/mandrurajesh89@gmail.com/prod-actions/my-project" --overwrite
